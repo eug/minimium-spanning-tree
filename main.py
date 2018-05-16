@@ -1,4 +1,5 @@
 from operator import itemgetter
+import matplotlib.pyplot as plt
 
 class DisjointSet:
     def __init__(self, ids):
@@ -16,7 +17,6 @@ class DisjointSet:
             self.id[x] = y
 
 def plot_mst(mst):
-    import matplotlib.pyplot as plt
     for src, dst, _ in mst:
         x, y = [points[src][1], points[dst][1]], [points[src][2], points[dst][2]]
         plt.plot(x, y, marker='o', mfc='red', mec='red', color='black')
@@ -54,12 +54,26 @@ def read_input(datafile, classfile):
     
     return points, classes
 
+def graph_to_edges(graph):
+    return [(src, dst, graph[src][dst]) for src in graph for dst in graph[src]]
+
+def edges_to_graph(edges):
+    graph = {}
+    for src, dst, weight in edges:
+        if src not in graph:
+            graph[src] = {}
+        if dst not in graph:
+            graph[dst] = {}
+        graph[src][dst] = weight
+        graph[dst][src] = weight
+    return graph
+
 
 
 def kruskal(graph):
     mst = []
     ds = DisjointSet(list(graph.keys()))
-    edges = [(src, dst, graph[src][dst]) for src in graph for dst in graph[src]]
+    edges = graph_to_edges(graph)
     edges = sorted(edges, key=itemgetter(2))
     for src, dst, weight in edges:
         if ds.find(src) != ds.find(dst):
@@ -71,20 +85,64 @@ def prim(graph):
     return
 
 
+def find_clusters(classes, graph):
+    cluster_id = 0
+    vertices = list(graph.keys())
+    
+
+    while vertices:
+        start = vertices.pop()
+
+        classes[start] = cluster_id
+        visited, stack = set(), [start]
+        while stack:
+            v = stack.pop()
+            if v in visited: continue
+            
+            visited.add(v)
+
+            if v != start:
+                classes[v] = cluster_id
+                vertices.remove(v)
+            
+            for adj in graph[v]:
+                if adj in visited: continue
+                stack.append(adj)
+
+        cluster_id += 1
+    
+    return classes, cluster_id
+
 def clustering(graph, k, algorithm):
     algorithms = {'kruskal': kruskal, 'prim': prim}
     if algorithm not in algorithms:
         raise ValueError("Invalid algorithm")
 
+    classes = [-1] * len(graph)
     mst = algorithms[algorithm](graph)
-    # count groups
-    # while count_groups != k: remove
-    return 
+
+    while True:
+        classes, nclusters = find_clusters(classes, edges_to_graph(mst))
+        if nclusters == k: break
+        print(mst.pop())
+
+    return classes
 
 points, classes = read_input('data.txt', 'classes.txt')
 graph = create_graph(points)
-mst = kruskal(graph)
-plot_mst(mst[:-7])
+# mst = kruskal(graph)
+# plot_mst(mst)
 
-
-
+# colormap = {
+#     0:'black',
+#     1:'green',
+#     2:'blue',
+#     3:'red',
+#     4:'purple',
+#     5:'gray',
+#     6:'yellow'
+# }
+# for i, c in enumerate(clustering(graph, 7, 'kruskal')):
+#     i, x, y = points[i]
+#     plt.plot(x,y,'o', markersize=2, color=colormap[c])
+# plt.show()
