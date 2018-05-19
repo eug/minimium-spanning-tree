@@ -81,9 +81,9 @@ class Prim:
             raise ValueError("graph must be a dict.")
         if not k or k <= 0:
             raise ValueError("k must be greater than 0.")
-
         
         mst = Prim._algorithm(graph)
+        mst = sorted(mst, key=itemgetter(2))
         vertices = [v for v in graph]
 
         while True:
