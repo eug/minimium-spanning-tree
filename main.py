@@ -1,9 +1,9 @@
 import getopt
 import sys
-from ioutils import (read_input, save_clusters_png, save_clusters_txt, save_mst_png,
-                save_mst_txt)
 
 from algorithms import Kruskal, Prim
+from ioutils import (read_input, save_clusters_csv, save_clusters_png,
+                     save_mst_csv, save_mst_png)
 from utils import DisjointSet, create_graph, edges_to_graph, graph_to_edges
 
 
@@ -43,7 +43,7 @@ def parse_args(argv):
             config.mode_clustering = True
             config.kclusters = int(arg)
         elif opt in ('-o', '--output-type'):
-            if arg in ('txt', 'png'):
+            if arg in ('csv', 'png'):
                 config.output_type = arg
         elif opt in ('-h', '--help'):
             config.show_help = True
@@ -55,14 +55,14 @@ def print_help():
     print("""Clustering algorithms using Minimium Spanning Tree.
 Usage:
     python main.py -d data.txt -c classes.txt -k 7 -o png
-    python main.py -d data.txt -c classes.txt -m -o txt
+    python main.py -d data.txt -c classes.txt -m -o csv
 
 Options:
     -d --datafile=FILE          Data points file
     -c --classfile=FILE         Classes file
     -m --min-span-tree          Find the MST
     -k --k-clusters=N           Find k clusters
-    -o --output-type=png|txt    Specify the output type
+    -o --output-type=png|csv    Specify the output type
     -h --help                   Print this message
     """)
 
@@ -106,9 +106,9 @@ if __name__ == '__main__':
     if cfg.mode_mst:
         mst_kruskal = Kruskal.mst(graph)
         mst_prim = Prim.mst(graph)
-        if cfg.output_type == 'txt':
-            save_mst_txt('mst_kruskal.txt', mst_kruskal)
-            save_mst_txt('mst_prim.txt', mst_prim)
+        if cfg.output_type == 'csv':
+            save_mst_csv('mst_kruskal.csv', mst_kruskal)
+            save_mst_csv('mst_prim.csv', mst_prim)
         elif cfg.output_type == 'png':
             save_mst_png('mst_kruskal.png', mst_kruskal, points)
             save_mst_png('mst_prim.png', mst_prim, points)
@@ -116,8 +116,8 @@ if __name__ == '__main__':
         clusters_kruskal = Kruskal.clustering(graph, cfg.kclusters)
         clusters_prim = Prim.clustering(graph, cfg.kclusters)
         if cfg.output_type == 'txt':
-            save_clusters_txt('clusters_kruskal.txt', clusters_kruskal)
-            save_clusters_txt('clusters_prim.txt', clusters_prim)
+            save_clusters_csv('clusters_kruskal.csv', clusters_kruskal)
+            save_clusters_csv('clusters_prim.csv', clusters_prim)
         elif cfg.output_type == 'png':
             save_clusters_png('clusters_kruskal.png', clusters_kruskal, points)
             save_clusters_png('clusters_prim.png', clusters_prim, points)

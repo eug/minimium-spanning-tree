@@ -25,14 +25,15 @@ def read_input(datafile, classfile):
     
     return points, classes
 
-def save_mst_txt(filename, edges):
-    """Save MST into a text file.
+def save_mst_csv(filename, edges):
+    """Save MST into a csv file.
 
     Args:
         filename (str): Output filename.
         edges (list): List of tuple representing edges as (src, dst, weight).
     """
     with open(filename, 'w') as f:
+        f.write('source,destination,weight\n')
         for src, dst, weight in edges:
             f.write('{},{},{}\n'.format(src, dst, weight))
 
@@ -50,14 +51,15 @@ def save_mst_png(filename, edges, points):
     
     plt.savefig(filename, dpi=300)
 
-def save_clusters_txt(filename, classes):
-    """Save clusters into a text file.
+def save_clusters_csv(filename, classes):
+    """Save clusters into a csv file.
 
     Args:
         filename (str): Output filename.
         classes (list): Class of each data point.
     """
     with open(filename, 'w') as f:
+        f.write('class_id\n')
         for _class in classes:
             f.write('{}\n'.format(_class))
 
