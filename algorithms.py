@@ -21,7 +21,7 @@ def _find_clusters(mst_graph, vertices):
     unexplored = vertices.copy()        
     
     while unexplored:
-        start = vertices.pop()
+        start = unexplored.pop()
         classes[start] = cluster_id
         explored, stack = set(), [start]
 
@@ -151,12 +151,14 @@ class Prim:
         mst = Prim._algorithm(graph)
         mst = sorted(mst, key=itemgetter(2))
         vertices = [v for v in graph]
+        _graph = edges_to_graph(mst)
 
         while True:
-            _graph = edges_to_graph(mst)
             classes, nclusters = _find_clusters(_graph, vertices)
             if nclusters == k: break
-            mst.pop()
+            s, d, _ = mst.pop()
+            del _graph[s][d]
+            del _graph[d][s]
 
         return classes
 
