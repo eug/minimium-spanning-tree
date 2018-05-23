@@ -21,7 +21,7 @@ def graph_to_edges(graph):
     """Converts a graph to a list of edges.
     
     Args:
-        graph (dict): A non-empty graph. 
+        graph (dict): A non-empty graph as {src: {dst: weight}, ...}. 
     
     Returns:
         list: Returns a list of edges of the given graph.
@@ -78,10 +78,11 @@ def create_graph(points):
     """Creates a graph based on a list of points.
 
     Args:
-        points (list): A list of tuples representing points, ie. [(x, y), ...]
+        points (list): A list of tuples representing points as [(x, y), ...]
     
     Returns:
-        dict: Retuns a weighted graph (weights are the euclidean distance).
+        dict: Retuns a weighted graph (weights are the euclidean distance)
+              represented as {src: {dst: weight}, ...}.
     """
     graph = {}
     for src, xsrc, ysrc in points:
