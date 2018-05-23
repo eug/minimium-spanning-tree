@@ -28,6 +28,7 @@ def graph_to_edges(graph):
     """
     if graph is None or not isinstance(graph, dict):
         raise ValueError("A graph must be a valid dict.")
+
     return [(src, dst, graph[src][dst]) for src in graph for dst in graph[src]]
 
 def edges_to_graph(edges):
@@ -64,7 +65,6 @@ def euclidean(p, q):
     Returns:
         float: Returns the euclidean distance of p and q.
     """
-
     if p is None or not isinstance(p, tuple):
         raise('The argument p must be a valid tuple.')
 
@@ -96,4 +96,5 @@ def create_graph(points):
             weight = euclidean((xsrc, ysrc), (xdst, ydst))
             graph[src][dst] = weight
             graph[dst][src] = weight
+
     return graph

@@ -2,7 +2,7 @@ import math
 from heapq import heappop, heappush
 from operator import itemgetter
 
-from utils import DisjointSet, edges_to_graph, graph_to_edges
+from utils.graph import DisjointSet, edges_to_graph, graph_to_edges
 
 
 def _find_clusters(mst_graph, vertices):
@@ -102,7 +102,7 @@ class Kruskal:
         mst = []
         ds = DisjointSet(list(graph.keys()))
         edges = graph_to_edges(graph)
-        edges = sorted(edges, key=itemgetter(2))
+        #edges = sorted(edges, key=itemgetter(2))
         for src, dst, weight in edges:
             if ds.find(src) != ds.find(dst):
                 mst.append((src, dst, weight))

@@ -1,5 +1,7 @@
-from utils import euclidean
 import matplotlib.pyplot as plt
+
+from utils.graph import euclidean
+
 
 def read_input(datafile, classfile):
     """Read the data points file and class id of each point.
@@ -17,12 +19,12 @@ def read_input(datafile, classfile):
         for i, line in enumerate(f.readlines()):
             x, y = list(map(float,line.split()))
             points.append((i, x, y))
-    
+
     classes = []
     with open(classfile, 'r') as f:
         for i, line in enumerate(f.readlines()):
             classes.append((i, int(line)))
-    
+
     return points, classes
 
 def save_mst_csv(filename, edges):
@@ -46,9 +48,9 @@ def save_mst_png(filename, edges, points):
         poits(list): List of tuple representing points as (x, y).
     """
     for src, dst, _ in edges:
-        x, y = [points[src][1], points[dst][1]], [points[src][2], points[dst][2]]
-        plt.plot(x, y, marker='o', ms=3, mfc='red', mec='red', color='black')
-    
+        p, q = [points[src][1], points[dst][1]], [points[src][2], points[dst][2]]
+        plt.plot(p, q, marker='o', ms=3, mfc='red', mec='red', color='black')
+
     plt.savefig(filename, dpi=300)
 
 def save_clusters_csv(filename, classes):
@@ -72,11 +74,11 @@ def save_clusters_png(filename, classes, points):
         poits(list): List of tuple representing points as (x, y).
     """
     colormap = {
-        0: 'black',     5: 'gray',
-        1: 'green',     6: 'yellow',
-        2: 'blue',      7: 'brown',
-        3: 'red',       8: 'magenta',
-        4: 'purple',    9: 'cyan'
+        0: 'black',    5: 'red',
+        1: 'magenta',  6: 'blue',
+        2: 'green',    7: 'yellow',
+        3: 'orange',   8: 'purple',
+        4: 'gray',     9: 'cyan'
     }
 
     for i, c in enumerate(classes):

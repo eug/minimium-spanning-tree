@@ -2,9 +2,10 @@ import getopt
 import sys
 
 from algorithms import Kruskal, Prim
-from ioutils import (read_input, save_clusters_csv, save_clusters_png,
-                     save_mst_csv, save_mst_png)
-from utils import DisjointSet, create_graph, edges_to_graph, graph_to_edges
+from utils.graph import (DisjointSet, create_graph, edges_to_graph,
+                         graph_to_edges)
+from utils.io import (read_input, save_clusters_csv, save_clusters_png,
+                      save_mst_csv, save_mst_png)
 
 
 class Config:
