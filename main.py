@@ -1,9 +1,7 @@
 import getopt
 import sys
-from io import (read_input, save_clusters_png, save_clusters_txt, save_mst_png,
+from ioutils import (read_input, save_clusters_png, save_clusters_txt, save_mst_png,
                 save_mst_txt)
-
-import matplotlib.pyplot as plt
 
 from algorithms import Kruskal, Prim
 from utils import DisjointSet, create_graph, edges_to_graph, graph_to_edges
@@ -16,6 +14,7 @@ class Config:
     mode_mst = False
     mode_clustering = False
     kclusters = 0
+    show_help = False
 
 
 def parse_args(argv):
@@ -110,81 +109,15 @@ if __name__ == '__main__':
         if cfg.output_type == 'txt':
             save_mst_txt('mst_kruskal.txt', mst_kruskal)
             save_mst_txt('mst_prim.txt', mst_prim)
-        elif cfg.output_type == 'img':
+        elif cfg.output_type == 'png':
             save_mst_png('mst_kruskal.png', mst_kruskal, points)
             save_mst_png('mst_prim.png', mst_prim, points)
     elif cfg.mode_clustering:
         clusters_kruskal = Kruskal.clustering(graph, cfg.kclusters)
         clusters_prim = Prim.clustering(graph, cfg.kclusters)
         if cfg.output_type == 'txt':
-            save_clusters_txt('clusters_kruskal.txt', mst_kruskal)
-            save_clusters_txt('clusters_prim.txt', mst_prim)
-        elif cfg.output_type == 'img':
-            save_clusters_png('clusters_kruskal.png', mst_kruskal, points)
-            save_clusters_png('clusters_prim.png', mst_prim, points)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# def plot_mst(points, mst):
-#     for src, dst, _ in mst:
-#         x, y = [points[src][1], points[dst][1]], [points[src][2], points[dst][2]]
-#         plt.plot(x, y, marker='o', mfc='red', mec='red', color='black')
-#     plt.show()
-
-
-
-
-
-# graph = {
-#     0: {1: 4, 2: 6, 3: 16},
-#     1: {0: 4, 5: 24},
-#     2: {0: 6, 3: 8, 4: 5, 6: 23},
-#     3: {0: 16, 2: 8, 4:10, 7: 21},
-#     4: {2: 5, 3: 10, 5: 18, 6: 11, 7: 14},
-#     5: {1: 24, 2: 23, 4: 18, 6: 9},
-#     6: {4: 11, 5: 9, 7: 7},
-#     7: {3: 21, 4: 14, 6: 7}
-# }
-
-
-# print(Prim.clustering(graph, 4))
-# print(Kruskal.clustering(graph, 4))
-
-#plot_mst(mst)
-
-
-# colormap = {
-#     0:'black',
-#     1:'green',
-#     2:'blue',
-#     3:'red',
-#     4:'purple',
-#     5:'gray',
-#     6:'yellow'
-# }
-
-# for i, c in enumerate(Kruskal.clustering(graph, 7)):
-#     i, x, y = points[i]
-#     plt.plot(x,y,'o', markersize=2, color=colormap[c])
-# plt.show()
-
-
-# for i, c in enumerate(Prim.clustering(graph, 7)):
-#     i, x, y = points[i]
-#     plt.plot(x,y,'o', markersize=2, color=colormap[c])
-# plt.show()
+            save_clusters_txt('clusters_kruskal.txt', clusters_kruskal)
+            save_clusters_txt('clusters_prim.txt', clusters_prim)
+        elif cfg.output_type == 'png':
+            save_clusters_png('clusters_kruskal.png', clusters_kruskal, points)
+            save_clusters_png('clusters_prim.png', clusters_prim, points)
