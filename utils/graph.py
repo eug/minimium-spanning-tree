@@ -1,21 +1,46 @@
 
 class DisjointSet:
     def __init__(self, ids):
-        self.id = ids
-        self.ngroups = len(self.id)
+        self.parent = ids
+        self.rank = [1] * len(self.parent)
+        self.ngroups = len(self.parent)
 
     def find(self, x):
-        while x != self.id[x]:
-            x = self.id[x]
-        return x
+        """Find the group id of x.
+        This method implements the Path Compression optimisation.
+
+        Args:
+            x (int): Object of search.
+
+        Returns:
+            Returns the group id of x.
+        """
+        if x != self.parent[x]:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
 
     def union(self, x, y):
-        x = self.find(x)
-        y = self.find(y)
-        if x != y:
-            self.id[x] = y
-            self.ngroups -= 1
+        """The groups of x and y are combined into the same group.
+        When x and y belongs to the same group, nothing is changed.
 
+        Args:
+            x (int): Object of a group different than y.
+            y (int): Object of a group different than x.
+        """
+        xroot = self.find(x)
+        yroot = self.find(y)
+
+        if xroot == yroot:
+            return
+
+        if self.rank[xroot] < self.rank[yroot]:
+            xroot, yroot = yroot, xroot
+
+        self.ngroups -= 1
+        self.parent[yroot] = xroot
+
+        if self.rank[xroot] == self.rank[yroot]:
+            self.rank[xroot] += 1
 
 def graph_to_edges(graph):
     """Converts a graph to a list of edges.
@@ -81,7 +106,7 @@ def create_graph(points):
         points (list): A list of tuples representing points as [(x, y), ...]
     
     Returns:
-        dict: Retuns a weighted graph (weights are the euclidean distance)
+        dict: Returns a weighted graph (weights are the euclidean distance)
               represented as {src: {dst: weight}, ...}.
     """
     graph = {}
