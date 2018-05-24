@@ -116,7 +116,7 @@ if __name__ == '__main__':
     elif cfg.mode_clustering:
         clusters_kruskal = Kruskal.clustering(graph, cfg.kclusters)
         clusters_prim = Prim.clustering(graph, cfg.kclusters)
-        if cfg.output_type == 'txt':
+        if cfg.output_type == 'csv':
             save_clusters_csv('clusters_kruskal.csv', clusters_kruskal)
             save_clusters_csv('clusters_prim.csv', clusters_prim)
         elif cfg.output_type == 'png':
