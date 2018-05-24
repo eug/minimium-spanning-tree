@@ -45,7 +45,7 @@ def save_mst_png(filename, edges, points):
     Args:
         filename (str): Output filename.
         edges (list): List of tuple representing edges as (src, dst, weight).
-        poits(list): List of tuple representing points as (x, y).
+        points (list): List of tuple representing points as (x, y).
     """
     for src, dst, _ in edges:
         p, q = [points[src][1], points[dst][1]], [points[src][2], points[dst][2]]
@@ -71,7 +71,7 @@ def save_clusters_png(filename, classes, points):
     Args:
         filename (str): Output filename.
         classes (list): Class of each data point.
-        poits(list): List of tuple representing points as (x, y).
+        points (list): List of tuple representing points as (x, y).
     """
     colormap = {
         0: 'black',    5: 'red',
