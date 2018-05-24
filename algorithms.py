@@ -102,7 +102,7 @@ class Kruskal:
         mst = []
         ds = DisjointSet(list(graph.keys()))
         edges = graph_to_edges(graph)
-        #edges = sorted(edges, key=itemgetter(2))
+        edges = sorted(edges, key=itemgetter(2))
         for src, dst, weight in edges:
             if ds.find(src) != ds.find(dst):
                 mst.append((src, dst, weight))
